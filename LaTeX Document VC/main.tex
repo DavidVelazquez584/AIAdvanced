@@ -1,0 +1,125 @@
+\documentclass[spanish,12pt,letterpaper]{article}
+\usepackage[spanish, es-tabla]{babel}%paquete para idiomas
+\usepackage[utf8]{inputenc}%paquete para la codificacion
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{minted}
+
+\title{\textcolor{blue}{Editor de textos LaTex}}
+\date{\today}
+
+\include{portada}
+\begin{document}
+
+
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\newpage
+\section{Contexto de la problemática}
+
+\textsc Uno de los principales factores que influyen en la ocurrencia de accidentes de tráfico es un comportamiento de conducción agresivo. Según lo informado por la \textit{AAA Foundation for Traffic Safety}, en el 55.7 por ciento de los accidentes de tráfico que fueron registrados a lo largo de cuatro años |es decir, 106727 accidentes fatales|, los conductores involucrados presentaron una o más conductas de conducción agresivas. Con base en esto, se realizará un modelo de \textit{machine learning} que describirá las métricas de los tipos de comportamiento que se reflejan en los datos recopilados de tres pruebas de manejo y ayudará a predecir el momento en el que los automovilistas, debido a sus técnicas de manejo, se encuentren en riesgo de sufrir un accidente de tráfico fatal. \\
+
+\textsc Los datos recopilados se obtienen de una aplicación de Android que utiliza el acelerómetro y el giroscopio de los dispositivos para registrar conductas tales como excesos de velocidad, frenados y giros bruscos. La fuente de estos datos, que provienen de un ejercicio de investigación realizado en la Universidad de Craiova, en Rumania, asegura que el origen de la idea de crear una aplicación que realice tales registros, es el hecho de que la gran mayoría de las personas en la actualidad poseen un teléfono inteligente. \\
+
+\section{Análisis exploratorio de los datos}
+
+\textsc Para efectos de la obtención, entrenamiento y prueba de cualquier modelo de aprendizaje automático, es necesario contar con datos. En el caso que analizaremos, se cuenta con dos conjuntos de datos, uno de entrenamiento llamado \verb|train_motion_data.csv| con 3644 observaciones y uno de prueba llamado \verb|test_motion_data.csv| con 3084 observaciones, ambos documentando ocho variables, siendo siete de ellas variables independientes y una de ellas dependiente, llamada \verb|Class|, que define cuál es el tipo de comportamiento descrito por cada evento registrado. La llamamos dependiente porque asumiremos que las demás variables influyen en ella. \textit{A posteriori}, usaremos el conjunto de prueba para verificar que nuestro modelo sea capaz de predecir, a partir de las variables independientes y con una exactitud aceptable, el tipo de conducta de manejo del usuario del dispositivo que obtuvo los datos correspondientes. \\
+
+\textsc Para ser más específicos con los datos recopilados, se incluye una descripción de cada una de las variables:
+\begin{itemize}
+    \item \textbf{AccX} | Aceleración en el eje de las X, medida en metros por segundo al cuadrado ($m/s^2$)
+    \item \textbf{AccY} | Aceleración en el eje de las Y, medida en metros por segundo al cuadrado ($m/s^2$)
+    \item \textbf{AccZ }| Aceleración en el eje de las Z, medida en metros por segundo al cuadrado ($m/s^2$)
+    \item \textbf{GyroX} | Rotación en el eje de las X, medida en grados por segundo (°$/s$)
+    \item \textbf{GyroY} | Rotación en el eje de las Y, medida en grados por segundo (°$/s$)
+    \item \textbf{GyroZ} | Rotación en el eje de las Z, medida en grados por segundo (°$/s$)
+    \item \textbf{Timestamp} | Tiempo en segundos, en formato Epoch Unix Timestamp
+    \item \textbf{Class} | Tipo de conducta de manejo (SLOW, NORMAL, AGGRESSIVE)
+\end{itemize} \\
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{VisualizaciónTrainMotionData.png}
+        \caption{Visualización de los datos de train\_motion\_data.csv}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+\textsc Ambos conjuntos de datos \textbf{no cuentan} con registros \textbf{nulos o incompletos}, por lo que se podrá realizar un análisis que no conlleve imputación de datos faltantes. Al momento de analizar la variable dependiente \verb|Class|, el número de registros que describen cada tipo de comportamiento es:
+
+\begin{itemize}
+    \item \textbf{SLOW}: 1331 - Proporción del 36.5\% de los datos.
+    \item \textbf{NORMAL}: 1200 - Proporción del 33\% de los datos.
+    \item \textbf{AGGRESSIVE}: 1113 - Proporción del 30.5\% de los datos.
+\end{itemize}
+
+Se puede notar que los porcentajes de los comportamientos están desbalanceados, lo que nos obligará en el futuro a tomar acciones de balanceo de datos para asegurar que nuestro modelo sea fiable. Asimismo, el análisis realizado con base en las marcas temporales registradas, una vez que separamos los datos de prueba en función de la variable \verb|Class|, arroja que los registros corresponden a intervalos de, aproximadamente, diez minutos de prueba de manejo de cada tipo de conducta. Los sensores registraron datos dos veces por segundo durante cada prueba. \\
+
+\textsc A continuación, vamos a visualizar de una manera más gráfica la correlación entre las variables, por medio de una matriz de Pearson, con un énfasis especial en la relación existente entre las variables independientes y la dependiente, para así proceder con la ideación de alguna hipótesis sobre cuáles de las independientes serán más relevantes en la obtención de nuestro modelo de predicción. \\
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{CorrelaciónDePearson.png}
+        \caption{Correlación de Pearson de los datos de train\_motion\_data.csv}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+\textsc Mediante el diagrama de correlación de Pearson, podemos visualizar que la variable dependiente \verb|Class|, se correlaciona en mayor medida con las variables independientes AccX |aceleración en el eje de las X medido en metros por segundo al cuadrado| y GyroZ |giroscopio en el eje de las Z medido en grados por segundo|. \\
+
+\textsc Recordemos que conocer la correlación entre las variables de este problema es uno de los pasos importantes para explorar los datos, sobre todo si queremos probar algún método estadístico. Sin embargo, no es el único dato relevante al realizar un análisis. Sabiendo que trabajamos con clases, resultaría muy interesante dividir el conjunto de datos en función de cada una de ellas y observar si hay algún hallazgo interesante si graficamos dicha clasificación, describiendo cada clase en función de cada una de las variables independientes.  \\
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{AccX.png}
+        \caption{Gráfico comparativo de aceleración en X para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{AccY.png}
+        \caption{Gráfico comparativo de aceleración en Y para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{AccZ.png}
+        \caption{Gráfico comparativo de aceleración en Z para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{GyroX.png}
+        \caption{Gráfico comparativo de giro en X para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{GyroY.png}
+        \caption{Gráfico comparativo de giro en Y para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{GyroZ.png}
+        \caption{Gráfico comparativo de giro en Z para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+\textsc Con el objetivo de realizar un análisis aún más completo de la situación problema, se vuelve necesario comprender la manera en la que funciona el giroscopio y el acelerómetro de un teléfono inteligente, de tal forma que podamos conocer el motivo por el cual dichas variables se correlacionan más con la variable de salida |o dependiente|. \\
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{AcelerómetroYGirómetro.png}
+        \caption{Acelerómetro y giroscopio con ejes cartesianos.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+\end{document}
