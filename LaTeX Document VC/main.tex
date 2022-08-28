@@ -69,6 +69,50 @@ Se puede notar que los porcentajes de los comportamientos están desbalanceados,
 
 \textsc Mediante el diagrama de correlación de Pearson, podemos visualizar que la variable dependiente \verb|Class|, se correlaciona en mayor medida con las variables independientes AccX |aceleración en el eje de las X medido en metros por segundo al cuadrado| y GyroZ |giroscopio en el eje de las Z medido en grados por segundo|. \\
 
+\textsc Recordemos que conocer la correlación entre las variables de este problema es uno de los pasos importantes para explorar los datos, sobre todo si queremos probar algún método estadístico. Sin embargo, no es el único dato relevante al realizar un análisis. Sabiendo que trabajamos con clases, resultaría muy interesante dividir el conjunto de datos en función de cada una de ellas y observar si hay algún hallazgo interesante si graficamos dicha clasificación, describiendo cada clase en función de cada una de las variables independientes.  \\
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{AccX.png}
+        \caption{Gráfico comparativo de aceleración en X para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{AccY.png}
+        \caption{Gráfico comparativo de aceleración en Y para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{AccZ.png}
+        \caption{Gráfico comparativo de aceleración en Z para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{GyroX.png}
+        \caption{Gráfico comparativo de giro en X para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{GyroY.png}
+        \caption{Gráfico comparativo de giro en Y para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=1\columnwidth]{GyroZ.png}
+        \caption{Gráfico comparativo de giro en Z para las tres clases de comportamiento.}
+        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
+    \end{figure}
+
 \textsc Con el objetivo de realizar un análisis aún más completo de la situación problema, se vuelve necesario comprender la manera en la que funciona el giroscopio y el acelerómetro de un teléfono inteligente, de tal forma que podamos conocer el motivo por el cual dichas variables se correlacionan más con la variable de salida |o dependiente|. \\
 
     \begin{figure}[htb]
@@ -77,86 +121,5 @@ Se puede notar que los porcentajes de los comportamientos están desbalanceados,
         \caption{Acelerómetro y giroscopio con ejes cartesianos.}
         \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
     \end{figure}
-
-\scriptsize\textcolor{red}{\textsc{LaTex} está formado por un gran \underline{conjunto de macros de \textsc{TeX}}, escrito por \textsl{Leslie Lamport} en 1984, con la intención de facilitar el uso del lenguaje de composición tipográfica,\textsc{TeX} creado por \textit{Donald Knuth}. Es muy utilizado para la composición de artículos académicos, tesis y libros técnicos, dado que la calidad tipográfica de los documentos realizados en \textsc{LaTex}, se considera adecuada a las necesidades de una editorial científica de primera línea, muchas de las cuales ya lo emplean\cite{AgirreBook}.}\\
-
-
-\section{Caracteristicas}
-\subsection{Capacidades}
-Además de sus capacidades gráficas para representar: 
-\begin{itemize}
-    \item ecuaciones
-    \item fórmulas complicadas
-    \item notación científica e incluso musical
-    \item permite estructurar fácilmente el documento \begin{itemize}
-        \item capítulos
-        \item secciones
-        \item notas
-        \item bibliografía
-        \item índices 
-        \item analíticos
-    \end{itemize}
-\end{itemize}
-
-\subsection{Distribuciones}
-
-Existen distribuciones e IDEs de LaTeX para todos los sistemas operativos más extendidos:
-\begin{enumerate}
-    \item Windows: TeXnicCenter
-    \item Linux: Kile
-    \item MacOS: TeXShop
-    \item Multiplataformas:
-        \begin{enumerate} 
-            \item Texmaker 
-            \item TeXworks
-        \end{enumerate}
-\end{enumerate}
-    \begin{figure}[htb]
-        \centering
-        \includegraphics[width=0.5\columnwidth]{Comandos.png}
-        \caption{Comandos para genrar ficheros a partir del fichero de LaTeX (.tex)}
-        \label{fig:comand}%puede ir el nombre que quiera, es solo referencia
-    \end{figure}
-    
-Como se muestra en la Figura \ref{fig:comand} a partir de una misma fuente se puede exportar a numerosos formatos\\
- \newpage  
-    \begin{table}[htb]
-    \centering 
-    \begin {tabular}{ll}  
-        \hline
-        Revista & Editorial \\
-        \hline
-        Aquatic Toxicology &(Elsevier)\\
-        Biomass \&  Bioenergy &(Elsevier)\\
-        Biology Letters &(The Royal Society)\\
-        Bioresource  Technology & (Elsevier)\\
-        Ecology & (ESA)\\
-        \\
-        \hline
-        \end{tabular}
-         \caption{Revistas con plantillas de LaTex}
-        \label{cuad:revistas}
-   \end{table}
-Como se muestra en la Tabla
-
-\ref{cuad:revistas}, muchas revistas incorporan plantillas de \LaTex para sus articulos cientificos\\
-
-Ecuacion de la recta: $$ax+by+c=0$$
-
-
-$$a  + \left(\frac{b}{c}\right) = \frac{ac+b}{c}$$
-
-$$\sum_{n=1}^\infty\frac{1}{n^2} = \frac {\pi^2}{6}$$
-
-$$\int_0^\infty \frac{\sin x}{x} dx = \frac{\pi}{2}$$
-
-\bibliographystyle{unsrt}
-\bibliography{refs}
-
-
-
-Existen distribuciones e IDEs \footnote {An integrated development environment (IDE) is a software application that provides comprehensive facilities to computer programmers for software development}de \LaTex para todos los sistemas operativos mas extendidos:
-
-
 
 \end{document}
